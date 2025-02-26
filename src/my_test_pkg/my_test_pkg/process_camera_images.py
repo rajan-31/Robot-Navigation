@@ -26,15 +26,26 @@ class ProcessCameraImages(Node):
         self.bridge = CvBridge()
         
         # Variable to store the latest frame
-        self.latest_frame = None       
+        self.latest_frame = None
+        self.frame_lock = threading.Lock()  # Lock to ensure thread safety
 
         # Flag to control the display loop
-        self.running = True 
+        self.running = True
+
+        # Start a separate thread for spinning (to ensure image_callback keeps receiving new frames)
+        self.spin_thread = threading.Thread(target=self.spin_thread_func)
+        self.spin_thread.start()
+
+    def spin_thread_func(self):
+        """Separate thread function for rclpy spinning."""
+        while rclpy.ok() and self.running:
+            rclpy.spin_once(self, timeout_sec=0.05)
 
     def image_callback(self, msg):
         """Callback function to receive and store the latest frame."""
         # Convert ROS Image message to OpenCV format and store it
-        self.latest_frame = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+        with self.frame_lock:
+            self.latest_frame = self.bridge.imgmsg_to_cv2(msg, "bgr8")
 
     def display_image(self):
         """Main loop to process and display the latest frame."""
@@ -58,8 +69,6 @@ class ProcessCameraImages(Node):
                 self.running = False
                 break
 
-            rclpy.spin_once(self, timeout_sec=0.05)
-
         # Close OpenCV window after quitting
         cv2.destroyAllWindows()
         self.running = False
@@ -69,18 +78,24 @@ class ProcessCameraImages(Node):
 
         
         return
+    
+    def stop(self):
+        """Stop the node and the spin thread."""
+        self.running = False
+        self.spin_thread.join()
  
 def main(args=None):
     print("OpenCV version: %s" % cv2.__version__)
-
+    
     rclpy.init(args=args)
     node = ProcessCameraImages()
-
+    
     try:
         node.display_image()  # Run the display loop
     except KeyboardInterrupt:
         pass
     finally:
+        node.stop()  # Ensure the spin thread and node stop properly
         node.destroy_node()
         rclpy.shutdown()
  
