@@ -21,6 +21,10 @@
         <param name="config_file"
             value="$(var gazebo_config_path)" />
     </node>
+    <!-- To get compressed images to save bandwidth | type of compressions compressed, theora, zstd -->
+    <node pkg="ros_gz_image" exec="image_bridge" args="/camera/image" >
+        <param name="camera.image.compressed.jpeg_quality" value="75" />
+    </node>
 
     <node pkg="rviz2" exec="rviz2" args="-d $(var rviz_config_path)" />
 </launch>
