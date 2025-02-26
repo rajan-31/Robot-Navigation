@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'process_camera_images = my_test_pkg.process_camera_images:main'
         ],
     },
 )
