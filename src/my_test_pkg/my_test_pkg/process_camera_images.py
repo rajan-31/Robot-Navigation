@@ -4,9 +4,15 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from geometry_msgs.msg import Twist
-import cv2
+import cv2  # v4.6
 import numpy as np
 import threading
+
+import cv2.aruco as aruco
+
+# Define dictionary
+aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_250)
+aruco_params = aruco.DetectorParameters_create()
 
 class ProcessCameraImages(Node):
     def __init__(self):
@@ -58,7 +64,15 @@ class ProcessCameraImages(Node):
             if self.latest_frame is not None:
 
                 # Process the current image
-                self.process_image(self.latest_frame)
+                # self.process_image(self.latest_frame)
+
+                # ===========================
+                gray = cv2.cvtColor(self.latest_frame, cv2.COLOR_BGR2GRAY)
+                corners, ids, rejected = aruco.detectMarkers(gray, aruco_dict, parameters=aruco_params)
+
+                if ids is not None:
+                    aruco.drawDetectedMarkers(self.latest_frame, corners, ids)
+                # ===========================
 
                 # Show the latest frame
                 cv2.imshow("frame", self.latest_frame)
@@ -75,7 +89,6 @@ class ProcessCameraImages(Node):
 
     def process_image(self, img):
         """Image processing task."""
-
         
         return
     
