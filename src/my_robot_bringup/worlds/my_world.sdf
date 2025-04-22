@@ -69,8 +69,8 @@
     </model>
 
     <!-- Custom Object -->
-    <model name='box'>
-      <pose>2.5586935345020407 0.05363276762459511 0.49999999990199806 6.2287739151293738e-22 9.3279666454713669e-22 -3.6315533669320137e-22</pose>
+    <!-- <model name='box'>
+      <pose>6.2010388374328613 4 0.49999999990199806 1.6237058122568123e-21 -6.6143847978628966e-21 -1.2330560131963447e-21</pose>
       <link name='box_link'>
         <inertial>
           <inertia>
@@ -118,7 +118,7 @@
     </model>
     
     <model name='cone'>
-      <pose>-0.71119588055281158 2.2642837984083184 0.49999999993296756 5.254931119316858e-17 -7.7132841033999823e-10 6.969765996526587e-23</pose>
+      <pose>-3.9729599963986177 5.9090914725278614 0.49999999990217014 1.5074091385676061e-10 5.0437678163617049e-10 3.3448832093413312e-14</pose>
       <link name='cone_link'>
         <inertial>
           <inertia>
@@ -168,7 +168,7 @@
     </model>
 
     <model name='cylinder'>
-      <pose>-1.2583875271171916 -1.8531908210669918 0.49999942638036005 1.4689050284665528e-19 5.9279732593709401e-19 -1.6791907872300109e-21</pose>
+      <pose>-5.1071467399597168 -6.4660301208496094 0.49999899681693183 1.4979794108213165e-19 5.9300833620040418e-19 -3.164540711336262e-21</pose>
       <link name='cylinder_link'>
         <inertial>
           <inertia>
@@ -215,7 +215,89 @@
       </link>
       <static>false</static>
       <self_collide>false</self_collide>
-    </model>
+    </model> -->
+
+    
+
+    <include>
+      <uri>file:///home/rajan/.gz/fuel/fuel.gazebosim.org/openrobotics/models/cutout wall/2</uri>
+      <name>cutout_wall_0</name>
+      <pose>5 -1.39 0 0 1.57 1.57</pose>
+    </include>
+    <include>
+      <uri>file:///home/rajan/.gz/fuel/fuel.gazebosim.org/openrobotics/models/cutout wall/2</uri>
+      <name>cutout_wall_1</name>
+      <pose>-1.39 -8 0 0 1.57 0</pose>
+    </include>
+    <include>
+      <uri>file:///home/rajan/.gz/fuel/fuel.gazebosim.org/openrobotics/models/cutout wall/2</uri>
+      <name>cutout_wall_2</name>
+      <pose>11 -5 0 0 1.57 1.57</pose>
+    </include>
+    <include>
+      <uri>file:///home/rajan/.gz/fuel/fuel.gazebosim.org/openrobotics/models/cutout wall/2</uri>
+      <name>cutout_wall_3</name>
+      <pose>8 8 0 0 -1.57 0</pose>
+    </include>
+    <include>
+      <uri>file:///home/rajan/.gz/fuel/fuel.gazebosim.org/openrobotics/models/cutout wall/2</uri>
+      <name>cutout_wall_4</name>
+      <pose>-2 5 6 0 -1.57 1.57</pose>
+    </include>
+
+
+    <include>
+      <uri>file:///home/rajan/.gazebo/models/marker_0</uri>
+      <name>marker_0</name>
+      <pose>4.85 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>file:///home/rajan/.gazebo/models/marker_1</uri>
+      <name>marker_1</name>
+      <pose>0 -7.85 0 0 0 1.57</pose>
+    </include>
+    <include>
+      <uri>file:///home/rajan/.gazebo/models/marker_2</uri>
+      <name>marker_2</name>
+      <pose>10.85 -3.7 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>file:///home/rajan/.gazebo/models/marker_3</uri>
+      <name>marker_3</name>
+      <pose>6.7 7.85 0 0 0 1.57</pose>
+    </include>
+    <include>
+      <uri>file:///home/rajan/.gazebo/models/marker_4</uri>
+      <name>marker_4</name>
+      <pose>-1.85 3.7 1 0 0 0</pose>
+    </include>
+
+
+
+
+
+    <!-- Markers -->
+
+    <!-- <include>
+      <uri>file:///home/rajan/.gazebo/models/marker_0</uri>
+      <name>marker_0</name>
+      <pose>0 0 0 0 0 3.14</pose>
+    </include> -->
+    <!-- <include>
+      <uri>file:///home/rajan/.gazebo/models/marker_1</uri>
+      <name>marker_1</name>
+      <pose>9 5 0 0 0 1.57</pose>
+    </include> -->
+    <!-- <include>
+      <uri>file:///home/rajan/.gazebo/models/marker_2</uri>
+      <name>marker_2</name>
+      <pose>-2 10 0 0 0 0.7</pose>
+    </include>
+    <include>
+      <uri>file:///home/rajan/.gazebo/models/marker_3</uri>
+      <name>marker_3</name>
+      <pose>-5 -8 0 0 0 -2.79</pose>
+    </include> -->
 
   </world>
 </sdf>

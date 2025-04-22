@@ -20,7 +20,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'process_camera_images = my_test_pkg.process_camera_images:main'
+            'process_camera_images = my_test_pkg.process_camera_images:main',
+            'pose_estimation = my_test_pkg.pose_estimation:main',
+            'navigation_01 = my_test_pkg.navigation_01:main',
         ],
     },
 )
