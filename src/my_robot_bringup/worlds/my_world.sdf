@@ -227,7 +227,7 @@
     <include>
       <uri>file:///home/rajan/.gz/fuel/fuel.gazebosim.org/openrobotics/models/cutout wall/2</uri>
       <name>cutout_wall_1</name>
-      <pose>-1.39 -8 0 0 1.57 0</pose>
+      <pose>-0.8 -8 0 0 1.57 0</pose>
     </include>
     <include>
       <uri>file:///home/rajan/.gz/fuel/fuel.gazebosim.org/openrobotics/models/cutout wall/2</uri>
@@ -254,7 +254,7 @@
     <include>
       <uri>file:///home/rajan/.gazebo/models/marker_1</uri>
       <name>marker_1</name>
-      <pose>0 -7.85 0 0 0 -1.57</pose>
+      <pose>0.5 -7.85 0 0 0 -1.57</pose>
     </include>
     <include>
       <uri>file:///home/rajan/.gazebo/models/marker_2</uri>
