@@ -20,6 +20,15 @@ from scipy.spatial.transform import Rotation
 aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_250)
 aruco_params = aruco.DetectorParameters_create()
 
+# next action: turn_cw, turn_ccw, move, idle
+aruco_data = {
+    -1: { "next_action": "move", "next_id": 0},         # move until you get close to 0
+    0: { "next_action": "turn_cw", "next_id": 1},       # turn_cw until you see 1, move until you get close to 1
+    1: { "next_action": "turn_ccw", "next_id": 2},      # turn_ccw until you see 2, move until you get close to 2
+    2: { "next_action": "turn_ccw", "next_id": 3},      
+    3: { "next_action": "turn_ccw", "next_id": 4},      
+    4: { "next_action": "idle", "next_id": math.inf},   # idle
+}
 
 
 class Navigation_03(Node):
@@ -56,8 +65,8 @@ class Navigation_03(Node):
         self.spin_thread.start()
 
 
-        self.target_id = 0
-        self.target_action = "turn_cw"  # turn_cw, turn_ccw, move, idle
+        self.target_id = -1
+        self.target_action = aruco_data[self.target_id]["next_action"]
 
     def spin_thread_func(self):
         """Separate thread function for rclpy spinning."""
@@ -127,22 +136,26 @@ class Navigation_03(Node):
 
         
         if ids is not None:
-            detected_id = ids[0][0]
-            marker_center = self.get_marker_center_on_image(rvecs[0][0], tvecs[0][0])
+            ids_flattened = ids.flatten().tolist()
+            requred_id = aruco_data[self.target_id]["next_id"]
+            marker_center = [0, 0]
+            if(requred_id in ids_flattened):
+                index = ids_flattened.index(requred_id)
+                print(f"{round(tvecs[index][0][2], 3):<6} {aruco_data[self.target_id]["next_id"]:>2} {self.target_action:>10}")
 
-            # print([round(vec, 3) for vec in rvecs[0][0]], [round(vec, 3) for vec in tvecs[0][0]], self.target_id, self.target_action)
+                marker_center = self.get_marker_center_on_image(rvecs[index][0], tvecs[index][0])
 
-            if detected_id == self.target_id + 1:
                 if self.target_action in ["turn_cw", "turn_ccw"]:
                     if marker_center[0] > 310 and marker_center[0] < 330:
                         self.target_action = "move"
 
 
                 elif self.target_action == "move":
-                    if tvecs[0][0][2] <= 4:
-                        self.target_action = "turn_ccw"
-                        self.target_id += 1
-
+                    if tvecs[index][0][2] <= 4:
+                        self.target_id = aruco_data[self.target_id]["next_id"]
+                        self.target_action = aruco_data[self.target_id]["next_action"]
+        else:
+            print(f"{'':<6} {aruco_data[self.target_id]["next_id"]:>2} {self.target_action:>10}")
 
         
         twist = Twist()
@@ -150,9 +163,9 @@ class Navigation_03(Node):
             case "move":
                 twist.linear.x = 0.5
             case "turn_cw":
-                twist.angular.z = -0.1
+                twist.angular.z = -0.3
             case "turn_ccw":
-                twist.angular.z = 0.1
+                twist.angular.z = 0.3
             case "idle":
                 twist.linear.x = 0.0
                 twist.angular.z = 0.0
