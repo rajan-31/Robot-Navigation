@@ -254,7 +254,7 @@
     <include>
       <uri>file:///home/rajan/.gazebo/models/marker_1</uri>
       <name>marker_1</name>
-      <pose>0 -7.85 0 0 0 1.57</pose>
+      <pose>0 -7.85 0 0 0 -1.57</pose>
     </include>
     <include>
       <uri>file:///home/rajan/.gazebo/models/marker_2</uri>
@@ -269,7 +269,7 @@
     <include>
       <uri>file:///home/rajan/.gazebo/models/marker_4</uri>
       <name>marker_4</name>
-      <pose>-1.85 3.7 1 0 0 0</pose>
+      <pose>-1.85 3.7 1 0 0 3.14</pose>
     </include>
 
 
