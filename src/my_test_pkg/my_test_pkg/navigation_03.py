@@ -9,10 +9,7 @@ import numpy as np
 import threading
 
 import cv2.aruco as aruco
-import time
 import math
-from scipy.spatial.transform import Rotation as R
-from scipy.spatial.transform import Rotation
 
 
 
@@ -137,8 +134,15 @@ class Navigation_03(Node):
         
         if ids is not None:
             ids_flattened = ids.flatten().tolist()
-            requred_id = aruco_data[self.target_id]["next_id"]
-            marker_center = [0, 0]
+            requred_id = aruco_data[self.target_id]["next_id"]  # next id to look for
+            marker_center = [0, 0]  # this is just to avoid error
+
+            """
+            is the next id in the detected ids?
+            if yes, then get the index of the next id in the detected ids
+            and get the rvecs and tvecs of that id
+            if no, then do nothing
+            """
             if(requred_id in ids_flattened):
                 index = ids_flattened.index(requred_id)
                 print(f"{round(tvecs[index][0][2], 3):<6} {aruco_data[self.target_id]["next_id"]:>2} {self.target_action:>10}")
@@ -146,18 +150,21 @@ class Navigation_03(Node):
                 marker_center = self.get_marker_center_on_image(rvecs[index][0], tvecs[index][0])
 
                 if self.target_action in ["turn_cw", "turn_ccw"]:
+                    # get marker to center of image or directly in front of the camera
+                    # it's not exactly in front of the camera, but it's close enough
                     if marker_center[0] > 310 and marker_center[0] < 330:
                         self.target_action = "move"
 
-
                 elif self.target_action == "move":
+                    # if we are close enough to the marker, then move to the next id and it's action
                     if tvecs[index][0][2] <= 4:
                         self.target_id = aruco_data[self.target_id]["next_id"]
                         self.target_action = aruco_data[self.target_id]["next_action"]
+
         else:
             print(f"{'':<6} {aruco_data[self.target_id]["next_id"]:>2} {self.target_action:>10}")
 
-        
+        # based on the target action, publish to to cmd_vel
         twist = Twist()
         match self.target_action:
             case "move":
